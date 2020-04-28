@@ -13,11 +13,12 @@ try:
     sub = client.pubsub()
     sub.subscribe('request-channel')
     for message in sub.listen():
+        print('MESSAGE:', message)
         if message['type'] == "message":
-            print('MESSAGE:', message['data'])
             data = json.loads(message['data'])
-            mc_result = generator.generate_string()
-            response = str(data['id']) + str(data['channelID']) + mc_result
-            client.publish("response-channel", response)
+
+            result = generator.generate_string()
+            response = {'result': result, 'id': data['id']}
+            client.publish("response-channel", json.dumps(response))
 except (KeyboardInterrupt, SystemExit):
     sys.exit()

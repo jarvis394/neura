@@ -3,12 +3,16 @@ import dotenv from 'dotenv'
 import express from 'express'
 import redis from 'redis'
 
+interface Message {
+  id: string
+  result: string
+}
+
 // Initialize all environment variables to appear in the process.env
 dotenv.config()
 
 const app = express()
 const pub = redis.createClient()
-const sub = redis.createClient()
 
 console.clear()
 app.listen(process.env.PORT, () =>
@@ -21,38 +25,34 @@ client.on('ready', () => {
   console.log(`Logged in as ${client.user.tag}!`)
 })
 
-sub.subscribe('response-channel', (error, reply) => {
-  if (error) throw error
-  else console.log(`Subscribed to "${reply}" channel. Listening for updates.`)
-})
-
 client.on('message', async (msg) => {
   const isMentioned = msg.mentions.users.some((e) => e.id === client.user.id)
   const isCommand = msg.content.startsWith('!g')
 
   if (isMentioned || isCommand) {
     const id = msg.id
-    const idLength = id.length
     const channelID = msg.channel.id
-    const channelIDLength = channelID.length
-    
+    const sub = redis.createClient()
+
     console.log('COMMAND:', id, channelID)
 
     // Once got the message, send the result if it is valid
-    sub.once('message', (channel, message: string) => {
-      const hasValidID = message.slice(0, idLength) === id
-      const hasValidChannelID = message.slice(idLength, idLength + channelIDLength) === channelID
-      if (hasValidID && hasValidChannelID) {
-        msg.channel.send(message.slice(idLength + channelIDLength))
+    sub.on('message', (_, json: string) => {
+      const message: Message = JSON.parse(json)
+      const hasValidID = message.id === id
+
+      if (hasValidID) {
+        console.log('+ RESPONSE:', message.id, hasValidID)
+        msg.channel.send(message.result)
+        sub.unsubscribe()
       } else {
-        console.log(
-          'Got an unexpected message (id:',
-          id + ', channelID:',
-          channelID + '):',
-          channel,
-          message
-        )
+        console.log(`- WRONG (${id}):`, message.id, hasValidID)
       }
+    })
+
+    // Subsribe to the response channel
+    sub.subscribe('response-channel', (error, reply) => {
+      if (error) throw error
     })
 
     // Publish a channel ID to the requests channel
