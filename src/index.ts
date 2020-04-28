@@ -2,6 +2,15 @@ import Discord from 'discord.js'
 import dotenv from 'dotenv'
 import express from 'express'
 import redis from 'redis'
+import { spawn } from 'child_process'
+
+const pythonProcess = spawn('python', ['python/main.py'])
+pythonProcess.stdout.on('data', (data) => console.log(`backend: ${data}`))
+pythonProcess.stderr.on('data', (data) => console.error(`error (backend): ${data}`))
+pythonProcess.on('close', (code) => {
+  console.error('Python backend process exited with code', code, '\nExiting.')
+  process.exit(code)
+})
 
 interface Message {
   id: string
@@ -14,7 +23,6 @@ dotenv.config()
 const app = express()
 const pub = redis.createClient()
 
-console.clear()
 app.listen(process.env.PORT, () =>
   console.log('Started web server on port', process.env.PORT)
 )
@@ -34,7 +42,7 @@ client.on('message', async (msg) => {
     const id = msg.id
     const channelID = msg.channel.id
     const messages = await msg.channel.messages.fetch({ limit: 100 })
-    const samples = messages.map(e => e.content)
+    const samples = messages.map((e) => e.content)
     const sub = redis.createClient()
 
     console.log('COMMAND:', id, channelID)

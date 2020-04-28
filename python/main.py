@@ -4,14 +4,15 @@ import json
 import sys
 
 client = redis.Redis(host='localhost', port=6379, db=0)
+print('Running Python backend')
 
 try:
     sub = client.pubsub()
     sub.subscribe('request-channel')
     for message in sub.listen():
-        print('MESSAGE:', message)
         if message['type'] == "message":
             data = json.loads(message['data'])
+            print('MESSAGE:', data['id'])
             generator = mc.StringGenerator(
                 samples=data['samples']
             )
