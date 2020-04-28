@@ -4,7 +4,7 @@ import express from 'express'
 import redis from 'redis'
 import { spawn } from 'child_process'
 
-const pythonProcess = spawn('python', ['python/main.py'])
+const pythonProcess = spawn('python', ['backend/main.py'])
 pythonProcess.stdout.on('data', (data) => console.log(`backend: ${data}`))
 pythonProcess.stderr.on('data', (data) => console.error(`error (backend): ${data}`))
 pythonProcess.on('close', (code) => {
