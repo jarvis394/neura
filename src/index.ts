@@ -28,10 +28,13 @@ client.on('ready', () => {
 client.on('message', async (msg) => {
   const isMentioned = msg.mentions.users.some((e) => e.id === client.user.id)
   const isCommand = msg.content.startsWith('!g')
+  const isNotBot = msg.author.id !== client.user.id
 
-  if (isMentioned || isCommand) {
+  if ((isMentioned || isCommand) && isNotBot) {
     const id = msg.id
     const channelID = msg.channel.id
+    const messages = await msg.channel.messages.fetch({ limit: 100 })
+    const samples = messages.map(e => e.content)
     const sub = redis.createClient()
 
     console.log('COMMAND:', id, channelID)
@@ -51,12 +54,12 @@ client.on('message', async (msg) => {
     })
 
     // Subsribe to the response channel
-    sub.subscribe('response-channel', (error, reply) => {
+    sub.subscribe('response-channel', (error) => {
       if (error) throw error
     })
 
     // Publish a channel ID to the requests channel
-    pub.publish('request-channel', JSON.stringify({ channelID, id }))
+    pub.publish('request-channel', JSON.stringify({ channelID, id, samples }))
   }
 })
 

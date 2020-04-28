@@ -10,6 +10,7 @@
   "scripts": {
     "start": "ts-node ./src/index.ts",
     "start:prod": "node .",
+    "python": "python ./python/main.py",
     "lint": "npm run lint:eslint && npm run lint:prettier",
     "lint:eslint": "eslint ./src/**/*.{ts,tsx} --fix",
     "lint:prettier": "prettier --write --config .prettierrc ./src/**/*.{ts,tsx}"
