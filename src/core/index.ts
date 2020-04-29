@@ -56,4 +56,10 @@ client.on('guildCreate', async (guild) => {
   })
 })
 
+client.on('disconnect', () => {
+  log.warn("Disconnected from Discord")
+  log.info("Attempting to log in...")
+  client.login(process.env.TOKEN)
+})
+
 client.login(process.env.TOKEN)
