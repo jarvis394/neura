@@ -1,6 +1,6 @@
 {
   "name": "neura",
-  "version": "0.0.1",
+  "version": "1.0.0",
   "description": "Markov-powered chainy-random neuron stuff",
   "main": "./src/index.ts",
   "private": true,
