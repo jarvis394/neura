@@ -9,6 +9,7 @@
   },
   "scripts": {
     "start": "ts-node ./src/index.ts",
+    "start:dev": "ts-node-dev ./src/index.ts",
     "start:prod": "node .",
     "python": "python ./backend/main.py",
     "lint": "npm run lint:eslint && npm run lint:prettier",
@@ -21,6 +22,7 @@
     "@types/express": "^4.17.6",
     "@types/node": "^13.13.4",
     "@types/redis": "^2.8.18",
+    "@types/store": "^2.0.2",
     "@typescript-eslint/eslint-plugin": "^2.25.0",
     "@typescript-eslint/parser": "^2.25.0",
     "eslint": "^6.8.0",
@@ -29,9 +31,14 @@
     "typescript": "^3.8.3"
   },
   "dependencies": {
+    "chalk": "^4.0.0",
     "discord.js": "^12.2.0",
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
-    "redis": "^3.0.2"
+    "middleware-io": "^2.5.0",
+    "moment": "^2.24.0",
+    "redis": "^3.0.2",
+    "store": "^2.0.12",
+    "winston": "^3.2.1"
   }
 }
