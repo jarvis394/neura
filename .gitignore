@@ -4,3 +4,4 @@ build/
 .eslintcache
 .env
 logs/
+.vscode
