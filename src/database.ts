@@ -26,9 +26,11 @@ db.prepare(
   `
   CREATE TABLE IF NOT EXISTS "channels" (
     "id"	            TEXT NOT NULL,
-    "disabled"	      INTEGER NOT NULL DEFAULT 1,
-    "auto_disabled"	  INTEGER NOT NULL DEFAULT 1,
+    "disabled"	      INTEGER NOT NULL DEFAULT 0,
+    "auto_disabled"	  INTEGER NOT NULL DEFAULT 0,
     PRIMARY KEY("id")
   )
 `
 ).run()
+
+export default db
