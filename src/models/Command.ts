@@ -1,7 +1,8 @@
 import { Message } from 'discord.js'
+import { MessageExtended } from 'src/middlewares'
 
 export interface ExecOptions {
-  message: Message
+  message: MessageExtended
   args: string[]
 }
 

@@ -5,3 +5,5 @@ build/
 .env
 logs/
 .vscode
+*.sqlite
+data/

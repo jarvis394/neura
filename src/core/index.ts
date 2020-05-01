@@ -42,6 +42,7 @@ client.on('guildCreate', async (guild) => {
     .setDescription(description.join('\n'))
     .addFields(
       { name: 'Commands', value: `See \`${PREFIX}help\` for the information about bot\'s commands` },
+      { name: 'Support', value: `https://discord.gg/3YAZc7r` },
       { name: 'GitHub', value: `https://github.com/jarvis394/neura` },
       { name: 'DiscordBots', value: `https://top.gg/bot/704395625332211762` },
     )

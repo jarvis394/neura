@@ -2,6 +2,7 @@ import Command, { ExecOptions } from '../models/Command'
 import { MessageEmbed } from 'discord.js'
 import commands from '../core/commands'
 import { PREFIX } from '../config/constants'
+import Guild from '../models/Guild'
 
 export class HelpCommand implements Command {
   name = 'help'
@@ -12,8 +13,9 @@ export class HelpCommand implements Command {
   alias = ['h', 'hel', 'he', 'info', 'помощь', 'справка', 'about']
 
   exec({ message }: ExecOptions) {
+    const prefix = new Guild(message.guild.id).prefix || PREFIX
     const commandsHelp = commands.map(e => ({
-      name: PREFIX + e.name,
+      name: prefix + e.name,
       value: `**${e.description.en}**\n*Aliases: ${e.alias.map((i: string) => `\`${i}\``).join(', ')}*`
     }))
     const embed = new MessageEmbed()

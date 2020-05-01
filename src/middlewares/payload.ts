@@ -2,6 +2,7 @@ import { PREFIX } from '../config/constants'
 import { client } from '../core/index'
 import commands from '../core/commands'
 import { MessageExtended } from '.'
+import Guild from '../models/Guild'
 
 export default async (
   update: MessageExtended,
@@ -9,13 +10,15 @@ export default async (
 ): Promise<void | number> => {
   const { content, member, state } = update
   const mentionPrefix = `<@!${client.user.id}>`
+  const guild = new Guild(update.guild.id)
+  const prefix = guild.prefix || PREFIX
   let msg: string = content // Temporary message text
 
   // Check if command's prefix is mention or usual prefix
   // If none found then return
   if (content.startsWith(mentionPrefix)) {
     state.isMentioned = true
-  } else if (content.startsWith(PREFIX)) {
+  } else if (content.startsWith(prefix)) {
     state.isPrefixed = true
   } else return
 
@@ -27,7 +30,7 @@ export default async (
       .slice(1)
       .join(' ')
   } else if (state.isPrefixed) {
-    msg = content.slice(PREFIX.length)
+    msg = content.slice(prefix.length)
   } else {
     state.isCommand = false
   }

@@ -39,7 +39,7 @@ class Guild {
     data.id = this.id
 
     return db.prepare(
-      'INSERT OR REPLACE INTO main.guild (id, auto_interval, auto_enabled, prefix) VALUES (@id, @auto_interval, @auto_enabled, @prefix);'
+      'INSERT OR REPLACE INTO main.guilds (id, auto_interval, auto_enabled, prefix) VALUES (@id, @auto_interval, @auto_enabled, @prefix);'
     ).run(data)
   }
 
@@ -47,33 +47,33 @@ class Guild {
    * Guild's auto interval parameter
    */
   get autoInterval() {
-    return db.prepare(`SELECT auto_interval FROM main.guild WHERE id = ${this.id};`).get().auto_interval
+    return db.prepare(`SELECT auto_interval FROM main.guilds WHERE id = ${this.id};`).get().auto_interval
   }
   
   /**
    * Guild's auto enabled parameter status
    */
   get autoEnabled() {
-    return db.prepare(`SELECT auto_enabled FROM main.guild WHERE id = ${this.id};`).get().auto_enabled
+    return db.prepare(`SELECT auto_enabled FROM main.guilds WHERE id = ${this.id};`).get().auto_enabled
   }
   
   /**
    * Guild's prefix
    */
   get prefix() {
-    return db.prepare(`SELECT prefix FROM main.guild WHERE id = ${this.id};`).get().prefix
+    return db.prepare(`SELECT prefix FROM main.guilds WHERE id = ${this.id};`).get().prefix
   }
 
   setAutoInterval(interval: number) {
-    return db.prepare(`UPDATE main.guild SET auto_interval = ${interval} WHERE id = ${this.id};`)
+    return db.prepare(`UPDATE main.guilds SET auto_interval = ${interval} WHERE id = ${this.id};`).run()
   }
 
   setAutoEnabled(state: boolean) {
-    return db.prepare(`UPDATE main.guild SET auto_enabled = ${state ? 1 : 0} WHERE id = ${this.id};`)
+    return db.prepare(`UPDATE main.guilds SET auto_enabled = ${state ? 1 : 0} WHERE id = ${this.id};`).run()
   }
 
   setPrefix(prefix: string) {
-    return db.prepare(`UPDATE main.guild SET prefix = ${prefix} WHERE id = ${this.id};`)
+    return db.prepare(`UPDATE main.guilds SET prefix = '${prefix}' WHERE id = ${this.id};`).run()
   }
 }
 

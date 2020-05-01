@@ -16,7 +16,7 @@ db.prepare(
     "id"	                TEXT NOT NULL,
     "auto_interval"	      INTEGER NOT NULL DEFAULT 25,
     "auto_enabled"	      INTEGER NOT NULL DEFAULT 1,
-    "prefix"	            TEXT NOT NULL DEFAULT ${PREFIX},
+    "prefix"	            TEXT NOT NULL DEFAULT "${PREFIX}",
     PRIMARY KEY("id")
   )
 `
@@ -27,7 +27,7 @@ db.prepare(
   CREATE TABLE IF NOT EXISTS "channels" (
     "id"	            TEXT NOT NULL,
     "disabled"	      INTEGER NOT NULL DEFAULT 0,
-    "auto_disabled"	  INTEGER NOT NULL DEFAULT 0,
+    "auto_enabled"	  INTEGER NOT NULL DEFAULT 1,
     PRIMARY KEY("id")
   )
 `
