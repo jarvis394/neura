@@ -120,7 +120,7 @@ export class ConfigCommand implements Command {
         {
           name: 'Disabled status',
           value: [
-            `\`disabled <state>\` - **${channel.disabled}**`,
+            `\`disabled <state>\` - **${channel.disabled ? 'Yes' : 'No'}**`,
             'Disables bot in channel completely',
           ].join('\n')
         },
@@ -135,7 +135,9 @@ export class ConfigCommand implements Command {
       .setTimestamp()
       .setFooter('Made by jarvis394#8343')
 
-    return message.channel.send(embed)
+    if (this.channelParamsList[args[1]]) return this.channelParamsList[args[1]]({ message, args })
+    else if (!args[1]) return message.channel.send(embed)
+    else return this.sendList(message, true)
   }
 
   main({ message }: ExecOptions) {
@@ -171,14 +173,14 @@ export class ConfigCommand implements Command {
     return message.channel.send(embed)
   }
 
-  sendList(message: Message) {
-    const embed = new ErrorEmbed('Specify correct parameter: one of\n\n‣ ' + Object.keys(this.guildParamsList).join('\n‣ '))
+  sendList(message: Message, forChannel: boolean) {
+    const embed = new ErrorEmbed('Specify correct parameter: one of\n\n‣ ' + Object.keys(forChannel ? this.channelParamsList : this.guildParamsList).join('\n‣ '))
     return embed.send(message)
   }
 
   exec({ message, args }: ExecOptions) {
     if (this.guildParamsList[args[0]]) return this.guildParamsList[args[0]]({ message, args })
     else if (!args[0]) return this.main({ message, args })
-    else return this.sendList(message)
+    else return this.sendList(message, false)
   }
 }
