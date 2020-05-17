@@ -4,7 +4,7 @@ import db from '../database'
 
 const defaultData = {
   auto_interval: 25,
-  auto_enabled: 1,
+  auto_enabled: 0,
   prefix: PREFIX
 }
 
@@ -62,6 +62,10 @@ class Guild {
    */
   get prefix() {
     return db.prepare(`SELECT prefix FROM main.guilds WHERE id = ${this.id};`).get().prefix
+  }
+
+  getDBChannels() {
+    return db.prepare(`SELECT * FROM main.channels WHERE guild_id = ${this.id} ORDER BY auto_enabled DESC;`).get()
   }
 
   setAutoInterval(interval: number) {

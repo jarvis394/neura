@@ -18,13 +18,13 @@ try:
       )
       try:
         result = generator.generate_string(
-          attempts=20,
+          attempts=100,
           validator=mc.validators.words_count(minimal=1, maximal=15),
           formatter=mc.formatters.usual_syntax,
         )
         response = {'result': result, 'id': data['id']}
         client.publish("response-channel", json.dumps(response))
       except:
-        client.publish("response-channel", json.dumps({'result': '', 'id': data['id']}))
+        client.publish("response-channel", json.dumps({'result': 'error', 'id': data['id']}))
 except (KeyboardInterrupt, SystemExit):
   sys.exit()

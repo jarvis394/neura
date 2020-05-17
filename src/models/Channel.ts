@@ -10,13 +10,16 @@ export interface ChannelModel {
   id?: string
   disabled: number
   auto_enabled: number
+  guild_id?: string
 }
 
 class Channel {
   readonly id: string
+  readonly guildId: string
 
-  constructor(id: string | number) {
+  constructor(id: string | number, guildId: string | number) {
     this.id = id.toString()
+    this.guildId = guildId.toString()
 
     const data: ChannelModel = db
       .prepare(`SELECT * FROM main.channels WHERE id = ${this.id}`)
@@ -34,9 +37,10 @@ class Channel {
    */
   setData(data: ChannelModel): Database.RunResult {
     data.id = this.id
+    data.guild_id = this.guildId
 
     return db.prepare(
-      'INSERT OR REPLACE INTO main.channels (id, disabled, auto_enabled) VALUES (@id, @disabled, @auto_enabled);'
+      'INSERT OR REPLACE INTO main.channels (id, disabled, auto_enabled, guild_id) VALUES (@id, @disabled, @auto_enabled, @guild_id);'
     ).run(data)
   }
 

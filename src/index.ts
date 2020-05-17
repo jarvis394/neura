@@ -7,3 +7,5 @@ dotenv.config()
 console.log('\n\n')
 
 import './core/index'
+
+export default ''

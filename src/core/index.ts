@@ -34,7 +34,8 @@ client.on('error', (err) => log.error(err))
 client.on('guildCreate', async (guild) => {
   const description = [
     'I\'m **neura**, and I create some random stuff generated with a power of Markov chains!',
-    `I take the message history and generate an unique sentence, try it out - \`${PREFIX}g\``
+    `I take the message history and generate an unique sentence, try it out - \`${PREFIX}g\``,
+    `By default, auto-sending messages is disabled but you can change that in settings - \`${PREFIX}c auto\``
   ]
   const embed = new Discord.MessageEmbed()
     .setColor('#4a89ff')

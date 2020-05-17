@@ -33,7 +33,7 @@ export class ConfigCommand implements Command {
   }
 
   changeChannelAuto({ message, args }: ExecOptions) {
-    const channel = new Channel(message.channel.id)
+    const channel = new Channel(message.channel.id, message.guild.id)
     const newStateUnparsed = args[1]
     let newState: boolean
 
@@ -50,7 +50,7 @@ export class ConfigCommand implements Command {
   }
 
   changeChannelDisabled({ message, args }: ExecOptions) {
-    const channel = new Channel(message.channel.id)
+    const channel = new Channel(message.channel.id, message.guild.id)
     const newStateUnparsed = args[1]
     let newState: boolean
 
@@ -111,7 +111,7 @@ export class ConfigCommand implements Command {
 
   configureChannel({ message, args }: ExecOptions) {
     const guild = new Guild(message.guild.id)
-    const channel = new Channel(message.channel.id)
+    const channel = new Channel(message.channel.id, message.guild.id)
     const embed = new MessageEmbed()
       .setColor('#4a89ff')
       .setTitle('Config')
@@ -135,13 +135,14 @@ export class ConfigCommand implements Command {
       .setTimestamp()
       .setFooter('Made by jarvis394#8343')
 
-    if (this.channelParamsList[args[1]]) return this.channelParamsList[args[1]]({ message, args })
-    else if (!args[1]) return message.channel.send(embed)
+    if (!args[1]) return message.channel.send(embed)
+    else if (this.channelParamsList[args[1]]) return this.channelParamsList[args[1]]({ message, args })
     else return this.sendList(message, true)
   }
 
   main({ message }: ExecOptions) {
     const guild = new Guild(message.guild.id)
+    const channel = new Channel(message.channel.id, message.guild.id)
     const embed = new MessageEmbed()
       .setColor('#4a89ff')
       .setTitle('Config')
@@ -178,9 +179,9 @@ export class ConfigCommand implements Command {
     return embed.send(message)
   }
 
-  exec({ message, args }: ExecOptions) {
-    if (this.guildParamsList[args[0]]) return this.guildParamsList[args[0]]({ message, args })
-    else if (!args[0]) return this.main({ message, args })
+  async exec({ message, args }: ExecOptions) {
+    if (!args[0]) return this.main({ message, args })
+    else if (this.guildParamsList[args[0]]) return this.guildParamsList[args[0]]({ message, args })
     else return this.sendList(message, false)
   }
 }

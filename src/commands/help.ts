@@ -12,7 +12,7 @@ export class HelpCommand implements Command {
   }
   alias = ['h', 'hel', 'he', 'info', 'помощь', 'справка', 'about']
 
-  exec({ message }: ExecOptions) {
+  async exec({ message }: ExecOptions) {
     const prefix = new Guild(message.guild.id).prefix || PREFIX
     const commandsHelp = commands.map(e => ({
       name: prefix + e.name,

@@ -15,7 +15,7 @@ db.prepare(
   CREATE TABLE IF NOT EXISTS "guilds" (
     "id"	                TEXT NOT NULL,
     "auto_interval"	      INTEGER NOT NULL DEFAULT 25,
-    "auto_enabled"	      INTEGER NOT NULL DEFAULT 1,
+    "auto_enabled"	      INTEGER NOT NULL DEFAULT 0,
     "prefix"	            TEXT NOT NULL DEFAULT "${PREFIX}",
     PRIMARY KEY("id")
   )
@@ -28,6 +28,7 @@ db.prepare(
     "id"	            TEXT NOT NULL,
     "disabled"	      INTEGER NOT NULL DEFAULT 0,
     "auto_enabled"	  INTEGER NOT NULL DEFAULT 1,
+    "guild_id"        TEXT NOT NULL,
     PRIMARY KEY("id")
   )
 `
