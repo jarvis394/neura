@@ -4,9 +4,6 @@ import log from '../log'
 import getDefaultChannel from '../utils/getDefaultChannel'
 import { PREFIX } from '../config/constants'
 
-// Start Python backend
-import './startPython'
-
 // Start web server
 import './web'
 

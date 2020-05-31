@@ -6,7 +6,7 @@
 
 ## Features
 
-- Built with TypeScript, Python backend and Redis
+- Built with power of TypeScript and discord.js
 - Supports various parameters
 - More features in the future!
 

@@ -1,5 +1,5 @@
 import Command, { ExecOptions } from '../models/Command'
-import redis from 'redis'
+import { StringGenerator, formatters, validators } from 'markov-catena'
 
 interface RedisMessage {
   id: string
@@ -15,33 +15,15 @@ export class GenerateCommand implements Command {
   alias = ['g', 'gen', 'ген', 'г']
 
   async exec({ message }: ExecOptions) {
-    const id = message.id
-    const pub = redis.createClient()
     const channelID = message.channel.id
     const messages = await message.channel.messages.fetch({ limit: 100 })
-    const samples = messages.map((e) => e.content)
-    const sub = redis.createClient()
-
-    // Once got the message, send the result if it is valid
-    sub.on('message', (_, json: string) => {
-      const redisMessage: RedisMessage = JSON.parse(json)
-      const hasValidID = redisMessage.id === id
-
-      if (hasValidID) {
-        message.channel.send(redisMessage.result ? redisMessage.result : 'Cannot generate a message, sorry 😭')
-      }
-
-      sub.unsubscribe()
+    const samples = messages.map((e) => e.content).filter(e => e !== '')
+    const generator = new StringGenerator(samples)
+    const result = generator.generateString({
+      formatter: formatters.usualSyntax,
+      validator: validators.wordsCount(2, 20)
     })
-
-    sub.on('ready', () => {
-      // Subscribe to the response channel
-      sub.subscribe('response-channel', (error) => {
-        if (error) throw error
-      })
-
-      // Publish a channel ID to the requests channel
-      pub.publish('request-channel', JSON.stringify({ channelID, id, samples }))
-    })
+    
+    await message.channel.send(result)
   }
 }
