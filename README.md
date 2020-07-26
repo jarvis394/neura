@@ -4,6 +4,8 @@
 
 **neura** is a fun Discord bot that generates messages based on the message history
 
+Invite: https://neura.glitch.me/invite
+
 ## Features
 
 - Built with power of TypeScript and discord.js
