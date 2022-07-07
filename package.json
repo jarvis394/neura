@@ -37,7 +37,7 @@
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
     "middleware-io": "^2.5.0",
-    "moment": "^2.26.0",
+    "moment": "^2.29.4",
     "store": "^2.0.12",
     "winston": "^3.2.1",
     "markov-catena": "^1.0.0"
